@@ -5,7 +5,7 @@ const downloadVideo = async () => {
     const snapTikUrl = document.querySelector('#snaptik-url').value;
     showLoader();
     if (snapTikUrl) {
-        const apiUrl = 'https://snaptik.zone:8001/snaptik/download';
+        const apiUrl = 'http://snaptik.zone/snaptik/download';
         // const apiUrl = 'http://localhost:5500/snaptik/download';
         const postData = {
             url: snapTikUrl
@@ -19,7 +19,7 @@ const downloadVideo = async () => {
             body: JSON.stringify(postData)
         };
         try {
-            fetch(apiUrl, requestOptions)
+            await fetch(apiUrl, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === "success") {
