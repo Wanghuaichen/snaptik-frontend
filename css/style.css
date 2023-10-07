@@ -421,6 +421,13 @@ a {
 	.snap-tik-navbar .list-navbar .nav-hr {
 		display: none;
 	}
+	.snaptik-footer .snaptik-footer-content ul {
+		flex-flow: wrap;
+		row-gap: 16px;
+	}
+	.snaptik-footer .snaptik-footer-content ul li {
+		width: 50%;
+	}
 }
 @media (max-width: 767px) {
 	.snaptic-text li {
@@ -486,6 +493,9 @@ a {
 	}
 	.watermark-section .watermark-section-content h3 {
 		margin: 0 auto 32px;
+	}
+	.snaptik-footer .snaptik-footer-content ul li {
+		width: 100%;
 	}
 }
 

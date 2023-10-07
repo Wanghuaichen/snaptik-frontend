@@ -1,29 +1,36 @@
 let responseData = {};
 const snapTikUrlEle = document.querySelector('#snaptik-url');
 
+const getIdVideo = (url) => {
+    const matching = url.includes("/video/")
+    if (!matching) {
+        console.log(chalk.red("[X] Error: URL not found"));
+        exit();
+    }
+    const idVideo = url.substring(url.indexOf("/video/") + 7, url.length);
+    return (idVideo.length > 19) ? idVideo.substring(0, idVideo.indexOf("?")) : idVideo;
+}
+
+
 const downloadVideo = async () => {
     const snapTikUrl = document.querySelector('#snaptik-url').value;
     showLoader();
     if (snapTikUrl) {
-        const apiUrl = 'http://snaptik.zone/snaptik/download';
-        // const apiUrl = 'http://localhost:5500/snaptik/download';
-        const postData = {
-            url: snapTikUrl
-        };
-
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(postData)
-        };
+        const idVideo = getIdVideo(snapTikUrl);
+        const apiUrl = `https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=${idVideo}`;
         try {
-            await fetch(apiUrl, requestOptions)
+            await fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.status === "success") {
-                        responseData = data.data;
+                    if (data) {
+                        const withWaterMark = data.aweme_list[0].video.download_addr.url_list[0]
+                        const withNoWaterMark = data.aweme_list[0].video.play_addr.url_list[0]
+                        const response = {
+                            withWaterMark: withWaterMark,
+                            withNoWaterMark: withNoWaterMark,
+                            id: idVideo
+                        }
+                        responseData = response;
                         showWaterMarkSection();
                         hideLoader();
                     } else {
